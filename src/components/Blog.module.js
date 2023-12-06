@@ -2,30 +2,23 @@ import Image from "next/image";
 import nasgor from "/public/nasi-goreng.avif";
 import ButtonSmall from "./ui/buttonSmall";
 import { LiaClockSolid } from "react-icons/lia";
-import { createClient } from "contentful";
+import AxiosInstance from "@/utils/axios";
 
-export const getStaticProps = async () => {
-  const client = createClient({
-    spaces: process.env.CONTENTFUL_SPACE_ID,
-    accessToken: process.env.CONTENTFUL_ACCESS_KEY,
-  });
+export const getBlogsData = async () => {
+  try {
+    const res = await AxiosInstance.get("/entries", {params: {include: 2}});
 
-  console.log(client)
-
-  const res = await client.getEntries({ content_type: "recipe" });
-
-  const response = await client.getEntries({ content_type: "recipe" });
-
-
-  return {
-    props: {
-      recipes: res.items,
-    },
-  };
+    return {items: res.data.items, assets: res.data.includes.Asset};
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
 };
 
-const Blog = ({ recipes }) => {
-  
+const Blog = async () => {
+  const {items: blogsData, assets} = await getBlogsData();
+  const blogsList = blogsData.map((blog) => blog.fields);
+  console.log(blogsList);
 
   return (
     <>
@@ -67,6 +60,41 @@ const Blog = ({ recipes }) => {
               </div>
             </div>
           </div>
+
+          {blogsList.map(
+            (blog, index) => (
+              <div
+                key={blog.slug}
+                className="flex items-center justify-center flex-col"
+              >
+                <div className="bg-slate-50 lg:flex items-start justify-between gap-16 px-8 py-6 rounded-2xl">
+                  <div className="mb-4 lg:mb-0">
+                    <Image
+                      className="rounded-xl"
+                      src={`https:${assets[index].fields.file.url}`}
+                      alt={assets[index].fields.title}
+                      width={350}
+                      height={350}
+                      priority
+                    />
+                  </div>
+                  <div className="flex flex-col lg:w-1/2 py-3">
+                    <div className="mb-12 flex justify-between items-center">
+                      <span className="text-xs text-slate-400 uppercase">
+                        {blog.datePost}
+                      </span>
+                      <span className="flex items-center gap-1 text-sm text-slate-400">
+                        {blog.cookingTime}m
+                        <LiaClockSolid size={"1em"} />
+                      </span>
+                    </div>
+                    <h1 className="text-2xl font-bold mb-3">{blog.title}</h1>
+                    <p className="text-slate-600">{}</p>
+                  </div>
+                </div>
+              </div>
+            )
+          )}
         </div>
       </div>
     </>
