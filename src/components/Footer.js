@@ -1,10 +1,9 @@
-import ButtonPrimary from "./ui/buttonPrimary";
-
+"use client"
 const Footer = () => {
   return (
     <footer className="bg-slate-50 w-full">
       <div className="  px-4 lg:px-16 py-20">
-        <div className="sm:w-full md:w-1/2 mx-auto flex flex-col justify-center items-center text-center gap-4">
+        <div className="w-full md:w-1/2 xl:w-1/3 mx-auto flex flex-col justify-center items-center text-center gap-4">
           <h1 className="font-extrabold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-600 to-pink-600 ">
             Personally Newsletter
           </h1>

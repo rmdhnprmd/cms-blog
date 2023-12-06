@@ -1,10 +1,11 @@
-// utils/contentful.js
-import { createClient } from 'contentful';
+
+var contentful = require("contentful")
+const {space} = require("postcss/lib/list")
 
 
-const client = createClient({
-  space: 'pgdlbrgrbxck',
-  accessToken: 'Sby8zgakP4n6UOOj4S_VbZAMXaXZgkFT2P1EsRfYAH4',
+const client = contentful.createClient({
+  space: process.env.CONTENTFUL_SPACE_ID,
+  accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
 
 export default client;
