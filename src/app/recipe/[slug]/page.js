@@ -40,10 +40,6 @@ export const fetchServices = async (slug) => {
 
 const Recipe = async ({ params }) => {
   const blogData = await fetchServices(params.slug);
-  if (!blogData) {
-    // Handle the case where no data is available
-    return <p>No data found</p>;
-  }
 
   return (
     <article className="pt-40 pb-20 px-[8rem] bg-slate-100 text-slate-700">
