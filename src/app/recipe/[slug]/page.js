@@ -58,13 +58,14 @@ const Recipe = async ({ params }) => {
         </div>
 
         <div className="w-4/5 mx-auto">
-          <div className="max-w-fit mx-auto mb-16">
+          <div className="max-w-fit mx-auto mb-16 ">
             <Image
               src={`https:${blogData.featuredImage}`}
               width={700}
               height={700}
               alt={blogData.featuredImageAlt}
-              className=" rounded-xl"
+              className=" rounded-xl w-auto h-auto"
+              priority
             />
           </div>
         </div>
