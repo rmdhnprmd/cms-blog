@@ -1,9 +1,8 @@
 
-var contentful = require("contentful")
-const {space} = require("postcss/lib/list")
+import { createClient} from "contentful" 
 
 
-const client = contentful.createClient({
+const client = createClient({
   space: process.env.CONTENTFUL_SPACE_ID,
   accessToken: process.env.CONTENTFUL_ACCESS_TOKEN,
 });
