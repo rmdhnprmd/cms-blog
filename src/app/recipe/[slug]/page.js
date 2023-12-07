@@ -25,7 +25,6 @@ export const fetchServices = async (slug) => {
       datePost: datePost,
       title: item.fields.title,
       thumbnail: item.fields.thumbnail.fields.file.url,
-      thumbnail: item.fields.thumbnail.fields.file.url,
       thumbnailAlt: item.fields.thumbnail.fields.title,
       featuredImage: item.fields.featuredImage.fields.file.url,
       featuredImageAlt: item.fields.featuredImage.fields.title,
@@ -34,7 +33,7 @@ export const fetchServices = async (slug) => {
       cookingTime: item.fields.cookingTime,
     };
   } catch (error) {
-    console.log(error.message);
+    console.error("Error fetching blog data:", error.message);
   }
 };
 
