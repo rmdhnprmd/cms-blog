@@ -2,7 +2,7 @@ import Image from "next/image";
 import { LiaClockSolid } from "react-icons/lia";
 import client from "@/utils/contentful";
 
-export const fetchServices = async (slug) => {
+const fetchServices = async (slug) => {
   try {
     const response = await client.getEntries({
       content_type: "recipe",
