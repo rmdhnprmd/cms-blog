@@ -2,46 +2,47 @@ import Image from "next/image";
 import { LiaClockSolid } from "react-icons/lia";
 import client from "@/utils/contentful";
 
-const fetchServices = async (slug) => {
-  try {
-    const response = await client.getEntries({
-      content_type: "recipe",
-      limit: 1,
-      "fields.slug": slug,
-    });
-    const item = response.items[0];
-    // console.log("FetchServiceBlog", item.fields.method.content[0])
+// const fetchServices = async (slug) => {
+//   try {
+//     const response = await client.getEntries({
+//       content_type: "recipe",
+//       limit: 1,
+//       "fields.slug": slug,
+//     });
+//     const item = response.items[0];
+//     // console.log("FetchServiceBlog", item.fields.method.content[0])
 
-    const date = item.datePost;
-    const datePost = new Intl.DateTimeFormat("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }).format(date);
+//     const date = item.datePost;
+//     const datePost = new Intl.DateTimeFormat("en-US", {
+//       year: "numeric",
+//       month: "long",
+//       day: "numeric",
+//     }).format(date);
     
    
-    return {
-      datePost: datePost,
-      title: item.fields.title,
-      thumbnail: item.fields.thumbnail.fields.file.url,
-      thumbnailAlt: item.fields.thumbnail.fields.title,
-      featuredImage: item.fields.featuredImage.fields.file.url,
-      featuredImageAlt: item.fields.featuredImage.fields.title,
-      ingredients: item.fields.ingredients,
-      method: item.fields.method.content,
-      cookingTime: item.fields.cookingTime,
-    };
-  } catch (error) {
-    console.error("Error fetching blog data:", error.message);
-  }
-};
+//     return {
+//       datePost: datePost,
+//       title: item.fields.title,
+//       thumbnail: item.fields.thumbnail.fields.file.url,
+//       thumbnailAlt: item.fields.thumbnail.fields.title,
+//       featuredImage: item.fields.featuredImage.fields.file.url,
+//       featuredImageAlt: item.fields.featuredImage.fields.title,
+//       ingredients: item.fields.ingredients,
+//       method: item.fields.method.content,
+//       cookingTime: item.fields.cookingTime,
+//     };
+//   } catch (error) {
+//     console.error("Error fetching blog data:", error.message);
+//   }
+// };
 
 const Recipe = async ({ params }) => {
-  const blogData = await fetchServices(params.slug);
+  // const blogData = await fetchServices(params.slug);
 
   return (
     <article className="pt-40 pb-20 px-[8rem] bg-slate-100 text-slate-700">
-      <div className="min-w-[600px] min-h-[600px]  rounded-full top-[30%] left-[50%] translate-x-[-50%] bg-gradient-to-r from-fuchsia-600 to-pink-600 absolute z-1 blur-[90px] "></div>
+      Halo
+      {/* <div className="min-w-[600px] min-h-[600px]  rounded-full top-[30%] left-[50%] translate-x-[-50%] bg-gradient-to-r from-fuchsia-600 to-pink-600 absolute z-1 blur-[90px] "></div>
       <div className="bg-slate-300/40 py-20 rounded-2xl z-10 backdrop-blur-2xl relative">
         <div className="flex flex-col justify-center items-center text-center mx-auto w-1/2 mb-28">
           <h1 className="text-5xl font-extrabold mb-6">{blogData.title}</h1>
@@ -97,7 +98,7 @@ const Recipe = async ({ params }) => {
             </figure>
           </section>
         </section>
-      </div>
+      </div> */}
     </article>
   );
 };
