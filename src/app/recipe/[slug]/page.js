@@ -1,5 +1,4 @@
 import Image from "next/image";
-import nasgor from "/public/nasi-goreng.avif";
 import { LiaClockSolid } from "react-icons/lia";
 import client from "@/utils/contentful";
 
