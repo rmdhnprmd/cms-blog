@@ -1,35 +1,43 @@
+import axiosInstance from "@/utils/axios";
 import client from "@/utils/contentful";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import { noSSR } from "next/dynamic";
 import Image from "next/image";
 import { LiaClockSolid } from "react-icons/lia";
 
-export const fetchServices = async (slug) => {
+export const getBlog = async (slug) => {
   try {
-    const response = await client.getEntries({
-      content_type: "recipe",
-      limit: 1,
-      "fields.slug": slug,
-    });
-    const item = response.items[0];
+    const res = await axiosInstance.get("/entries", {
+      params: {
+        content_type: 'recipe',
+        "fields.slug": slug,
+        limit: 1,
+      }
+    })
 
-    const date = new Date(item.sys.createdAt);
+    const date = new Date(res.data.items[0].sys.createdAt);
     const datePost = new Intl.DateTimeFormat("en-US", {
       year: "numeric",
       month: "long",
       day: "numeric",
     }).format(date);
+    
 
-    return {
-      datePost: datePost,
-      title: item.fields.title,
-      thumbnail: item.fields.thumbnail.fields.file.url,
-      thumbnailAlt: item.fields.thumbnail.fields.title,
-      featuredImage: item.fields.featuredImage.fields.file.url,
-      featuredImageAlt: item.fields.featuredImage.fields.title,
-      ingredients: item.fields.ingredients,
-      method: item.fields.method.content,
-      cookingTime: item.fields.cookingTime,
-    };
+    const items = {
+      datePost,
+      title: res.data.items[0].fields.title,
+      ingredients: res.data.items[0].fields.ingredients,
+      desc: res.data.items[0].fields.method,
+      cookingTime: res.data.items[0].fields.cookingTime,
+    }
+
+    const assets = {
+      img: res.data.includes.Asset[0].fields.file.url,
+      alt: res.data.includes.Asset[0].fields.title
+    }
+
+    return {items, assets}
+    
   } catch (error) {
     console.error("Error fetching blog data:", error.message);
     return null; // Return null or handle the error appropriately
@@ -37,8 +45,9 @@ export const fetchServices = async (slug) => {
 };
 
 const Recipe = async ({params}) => {
-  const blogData = await fetchServices(params.slug)
-  // console.log(blogData)
+  const {items: blogData, assets} = await getBlog(params.slug)
+  const {desc} = blogData
+  // console.log("ini desc", desc)
 
   return (
     <article className="pt-40 pb-20 px-[8rem] bg-slate-100 text-slate-700">
@@ -55,10 +64,10 @@ const Recipe = async ({params}) => {
         <div className="w-4/5 mx-auto">
           <div className="max-w-fit mx-auto mb-16 ">
             <Image
-              src={`https:${blogData.featuredImage}`}
+              src={`https:${assets.img}`}
               width={500}
               height={500}
-              alt={blogData.featuredImageAlt}
+              alt={assets.alt}
               className=" rounded-xl w-auto h-auto"
               priority
             />
@@ -69,9 +78,9 @@ const Recipe = async ({params}) => {
           <div className="flex flex-col gap-1">
             <div className=" text-sm flex gap-1 items-center mb-6 text-slate-50 px-3 md:ml-auto py-1 w-fit bg-slate-500 border-1 rounded-lg">
               <LiaClockSolid size={"1.5em"} />
-              {/* <p>Cooking {blogData.cookingTime}m</p> */}
+              <p>Cooking {blogData.cookingTime}m</p>
             </div>
-            <h2 className="text-xl font-semibold uppercase">Ingridients:</h2>
+            <h2 className="text-xl font-semibold uppercase">Ingredients:</h2>
 
             <div className="mb-8">
               <ul>
@@ -89,11 +98,7 @@ const Recipe = async ({params}) => {
 
           <section>
             <figure>
-              {blogData.method.map((item, i) => (
-                <div key={`itemIndex-${i}`} className="mb-3">
-                  {item.content && item.content[0].value}
-                </div>
-              ))}
+              {documentToReactComponents(desc)}
             </figure>
           </section>
         </section>
