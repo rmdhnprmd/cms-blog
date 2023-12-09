@@ -9,7 +9,7 @@ export const fetchServices = async (slug) => {
       content_type: "recipe",
       limit: 1,
       "fields.slug": slug,
-    }, {cache: noSSR});
+    });
     const item = response.items[0];
 
     const date = new Date(item.sys.createdAt);
@@ -38,7 +38,7 @@ export const fetchServices = async (slug) => {
 
 const Recipe = async ({params}) => {
   const blogData = await fetchServices(params.slug)
-  console.log(blogData)
+  // console.log(blogData)
 
   return (
     <article className="pt-40 pb-20 px-[8rem] bg-slate-100 text-slate-700">
