@@ -1,17 +1,16 @@
+import client from "@/utils/contentful";
+import { noSSR } from "next/dynamic";
 import Image from "next/image";
 import { LiaClockSolid } from "react-icons/lia";
-import client from "@/utils/contentful";
 
-const fetchServices = async (slug) => {
-  const response = await client.getEntries({
-    content_type: "recipe",
-    limit: 1,
-    "fields.slug": slug,
-  });
-
+export const fetchServices = async (slug) => {
   try {
+    const response = await client.getEntries({
+      content_type: "recipe",
+      limit: 1,
+      "fields.slug": slug,
+    }, {cache: noSSR});
     const item = response.items[0];
-    console.log("FetchServiceBlog", item.fields.method.content[0])
 
     const date = new Date(item.sys.createdAt);
     const datePost = new Intl.DateTimeFormat("en-US", {
@@ -33,11 +32,13 @@ const fetchServices = async (slug) => {
     };
   } catch (error) {
     console.error("Error fetching blog data:", error.message);
+    return null; // Return null or handle the error appropriately
   }
 };
 
-const Recipe = async ({ params }) => {
-  const blogData = await fetchServices(params.slug);
+const Recipe = async ({params}) => {
+  const blogData = await fetchServices(params.slug)
+  console.log(blogData)
 
   return (
     <article className="pt-40 pb-20 px-[8rem] bg-slate-100 text-slate-700">
@@ -68,7 +69,7 @@ const Recipe = async ({ params }) => {
           <div className="flex flex-col gap-1">
             <div className=" text-sm flex gap-1 items-center mb-6 text-slate-50 px-3 md:ml-auto py-1 w-fit bg-slate-500 border-1 rounded-lg">
               <LiaClockSolid size={"1.5em"} />
-              <p>Cooking {blogData.cookingTime}m</p>
+              {/* <p>Cooking {blogData.cookingTime}m</p> */}
             </div>
             <h2 className="text-xl font-semibold uppercase">Ingridients:</h2>
 
