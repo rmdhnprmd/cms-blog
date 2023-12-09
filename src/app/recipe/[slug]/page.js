@@ -12,7 +12,7 @@ const fetchServices = async (slug) => {
     const item = response.items[0];
     // console.log("FetchServiceBlog", item.fields.method.content[0])
 
-    const date = item.datePost;
+    const date = new Date(item.sys.createdAt)
     const datePost = new Intl.DateTimeFormat("en-US", {
       year: "numeric",
       month: "long",
