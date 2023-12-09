@@ -3,16 +3,17 @@ import { LiaClockSolid } from "react-icons/lia";
 import client from "@/utils/contentful";
 
 const fetchServices = async (slug) => {
-  try {
-    const response = await client.getEntries({
-      content_type: "recipe",
-      limit: 1,
-      "fields.slug": slug,
-    });
-    const item = response.items[0];
-    // console.log("FetchServiceBlog", item.fields.method.content[0])
+  const response = await client.getEntries({
+    content_type: "recipe",
+    limit: 1,
+    "fields.slug": slug,
+  });
 
-    const date = new Date(item.sys.createdAt)
+  try {
+    const item = response.items[0];
+    console.log("FetchServiceBlog", item.fields.method.content[0])
+
+    const date = new Date(item.sys.createdAt);
     const datePost = new Intl.DateTimeFormat("en-US", {
       year: "numeric",
       month: "long",
