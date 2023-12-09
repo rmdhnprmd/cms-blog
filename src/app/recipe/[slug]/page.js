@@ -2,7 +2,7 @@ import client from "@/utils/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import Image from "next/image";
 import { LiaClockSolid } from "react-icons/lia";
-import {BLOCKS, HEADINGS} from "@contentful/rich-text-types"
+import {BLOCKS} from "@contentful/rich-text-types"
 
 export const fetchServices = async (slug) => {
   try {

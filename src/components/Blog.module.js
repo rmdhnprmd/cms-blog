@@ -4,6 +4,7 @@ import ButtonSmall from "./ui/buttonSmall";
 import { LiaClockSolid } from "react-icons/lia";
 import Link from "next/link";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
+import {BLOCKS} from "@contentful/rich-text-types"
 
 const Blog = ({ recipes }) => {
   // console.log("ini ID nya:", recipes.id)
@@ -14,7 +15,19 @@ const Blog = ({ recipes }) => {
     day: "numeric",
   }).format(date);
 
+  const RICHTEXT_OPTIONS = {
+    renderNode: {
+      [BLOCKS.PARAGRAPH]: (node, children) => {
+        return <p className="text-slate-700 mb-3">{children}</p>
+      },
+      [BLOCKS.HEADING_4]: (node, children) => {
+        return <h4 className="text-slate-700 mb-4 font-bold text-lg">{children}</h4>
+      }
+    }
+  }
+
   return (
+    
     <>
       <div
         className="px-4 py-36 lg:px-40 bg-slate-200 text-slate-800"
@@ -56,7 +69,7 @@ const Blog = ({ recipes }) => {
                     </div>
                     <h1 className="text-2xl font-bold mb-3">{recipe.title}</h1>
                     <div>
-                      {documentToReactComponents(recipe.method)}
+                      {documentToReactComponents(recipe.method, RICHTEXT_OPTIONS)}
                     </div>
                   </div>
                 </figure>
