@@ -1,7 +1,5 @@
 import axiosInstance from "@/utils/axios";
-import client from "@/utils/contentful";
 import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
-import { noSSR } from "next/dynamic";
 import Image from "next/image";
 import { LiaClockSolid } from "react-icons/lia";
 
