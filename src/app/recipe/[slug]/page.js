@@ -1,7 +1,8 @@
 import client from "@/utils/contentful";
-import { noSSR } from "next/dynamic";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 import Image from "next/image";
 import { LiaClockSolid } from "react-icons/lia";
+import {BLOCKS, HEADINGS} from "@contentful/rich-text-types"
 
 export const fetchServices = async (slug) => {
   try {
@@ -27,7 +28,7 @@ export const fetchServices = async (slug) => {
       featuredImage: item.fields.featuredImage.fields.file.url,
       featuredImageAlt: item.fields.featuredImage.fields.title,
       ingredients: item.fields.ingredients,
-      method: item.fields.method.content,
+      method: item.fields.method,
       cookingTime: item.fields.cookingTime,
     };
   } catch (error) {
@@ -38,7 +39,16 @@ export const fetchServices = async (slug) => {
 
 const Recipe = async ({params}) => {
   const blogData = await fetchServices(params.slug)
-  // console.log(blogData)
+  const RICHTEXT_OPTIONS = {
+    renderNode: {
+      [BLOCKS.PARAGRAPH]: (node, children) => {
+        return <p className="text-slate-700 mb-3">{children}</p>
+      },
+      [BLOCKS.HEADING_4]: (node, children) => {
+        return <h4 className="text-slate-700 mb-4 font-bold text-lg">{children}</h4>
+      }
+    }
+  }
 
   return (
     <article className="pt-40 pb-20 px-[8rem] bg-slate-100 text-slate-700">
@@ -69,9 +79,9 @@ const Recipe = async ({params}) => {
           <div className="flex flex-col gap-1">
             <div className=" text-sm flex gap-1 items-center mb-6 text-slate-50 px-3 md:ml-auto py-1 w-fit bg-slate-500 border-1 rounded-lg">
               <LiaClockSolid size={"1.5em"} />
-              {/* <p>Cooking {blogData.cookingTime}m</p> */}
+              <p>Cooking {blogData.cookingTime}m</p>
             </div>
-            <h2 className="text-xl font-semibold uppercase">Ingridients:</h2>
+            <h2 className="text-xl font-semibold uppercase">Ingredients:</h2>
 
             <div className="mb-8">
               <ul>
@@ -89,11 +99,7 @@ const Recipe = async ({params}) => {
 
           <section>
             <figure>
-              {blogData.method.map((item, i) => (
-                <div key={`itemIndex-${i}`} className="mb-3">
-                  {item.content && item.content[0].value}
-                </div>
-              ))}
+              {documentToReactComponents(blogData.method, RICHTEXT_OPTIONS)}
             </figure>
           </section>
         </section>

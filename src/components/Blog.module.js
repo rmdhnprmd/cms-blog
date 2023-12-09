@@ -3,6 +3,7 @@ import Image from "next/image";
 import ButtonSmall from "./ui/buttonSmall";
 import { LiaClockSolid } from "react-icons/lia";
 import Link from "next/link";
+import { documentToReactComponents } from "@contentful/rich-text-react-renderer";
 
 const Blog = ({ recipes }) => {
   // console.log("ini ID nya:", recipes.id)
@@ -54,14 +55,9 @@ const Blog = ({ recipes }) => {
                       </span>
                     </div>
                     <h1 className="text-2xl font-bold mb-3">{recipe.title}</h1>
-                    {recipe.method.map((contentPart, index) => (
-                      <div
-                        key={`documentPart-${index}`}
-                        className="text-slate-600 "
-                      >
-                        {contentPart.content[0].value}
-                      </div>
-                    ))}
+                    <div>
+                      {documentToReactComponents(recipe.method)}
+                    </div>
                   </div>
                 </figure>
               </Link>

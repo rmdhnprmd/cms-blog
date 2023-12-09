@@ -11,7 +11,7 @@ export const fetchServices = async () => {
       return {
         id: item.sys.id,
         title: item.fields.title,
-        method: item.fields.method.content,
+        method: item.fields.method,
         slug: item.fields.slug,
         thumbnail: item.fields.thumbnail.fields.file.url,
         thumbnailAlt: item.fields.thumbnail.fields.title,
