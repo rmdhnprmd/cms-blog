@@ -84,7 +84,7 @@ const Blog = async () => {
                     <Image
                       className="rounded-xl max-w-[inherit] w-auto"
                       src={`https:${recipe.img}`}
-                      alt={recipe.imgAlt}
+                      alt={`this is picture ${recipe.imgAlt}`}
                       width={500}
                       height={500}
                       priority
